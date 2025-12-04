@@ -37,7 +37,7 @@ public class HQLCriteria {
         System.out.println("session closed");
         //close session factory
         sessionFactory.close();
-        System.out.println("sessionFatory closed");
+        System.out.println("sessionFatory closed  successfully");
         System.out.println("program ends.....");
     }
 }
