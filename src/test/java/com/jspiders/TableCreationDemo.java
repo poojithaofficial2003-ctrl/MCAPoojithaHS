@@ -12,9 +12,9 @@ public class TableCreationDemo {
         Configuration config = new Configuration();
         config.configure("hibernate.cfg.xml");
 
-        System.out.println("Build sessionfactory..");
+        System.out.println("Build sessionfactory............");
         SessionFactory sessionFactory = config.buildSessionFactory();
-        System.out.println("Open session");
+        System.out.println("Open sessioned successfully");
         Session session = sessionFactory.openSession();
          //logics
         System.out.println("Execute logics");
