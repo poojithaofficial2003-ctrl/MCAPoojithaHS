@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BankApp - Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg,#1e3c72,#2a5298);
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+
+        .card{
+            background:white;
+            padding:40px;
+            border-radius:12px;
+            box-shadow:0 10px 25px rgba(0,0,0,0.2);
+            width:350px;
+            text-align:center;
+        }
+
+        h2{
+            color:#2a5298;
+            margin-bottom:20px;
+        }
+
+        input{
+            width:100%;
+            padding:12px;
+            margin:10px 0;
+            border-radius:6px;
+            border:1px solid #ccc;
+        }
+
+        button{
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:6px;
+            background:#2a5298;
+            color:white;
+            font-size:16px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#1e3c72;
+        }
+
+        #qrContainer{
+            margin-top:20px;
+        }
+
+        img{
+            width:200px;
+            margin-top:10px;
+        }
+
+        .login-link{
+            margin-top:20px;
+            font-size:14px;
+        }
+
+        .login-link a{
+            color:#2a5298;
+            font-weight:bold;
+            text-decoration:none;
+        }
+
+        .login-link a:hover{
+            text-decoration:underline;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2>🏦 BankApp Registration</h2>
+
+    <input type="text" id="username" placeholder="Enter Username">
+
+    <button onclick="registerUser()">Register</button>
+
+    <div id="qrContainer"></div>
+
+    <!-- ✅ LOGIN LINK ADDED -->
+    <div class="login-link">
+        Already registered?
+        <a href="/login">Login here</a>
+    </div>
+
+</div>
+
+<script>
+
+    function registerUser(){
+
+        let username = document.getElementById("username").value;
+
+        if(username===""){
+            alert("Please enter username");
+            return;
+        }
+
+        fetch("/auth/register?username="+username,{
+            method:"POST"
+        })
+        .then(response=>response.text())
+        .then(data=>{
+
+            document.getElementById("qrContainer").innerHTML =
+                "<h3>Scan QR Code</h3>" +
+                "<img src='data:image/png;base64,"+data+"'/>" +
+                "<p>Registration Successful ✅</p>" +
+                "<button onclick='goLogin()'>Go To Login</button>";
+
+        })
+        .catch(error=>{
+            alert("Something went wrong!");
+        });
+
+    }
+
+    function goLogin(){
+        window.location.href="/login";
+    }
+
+</script>
+
+</body>
+</html>

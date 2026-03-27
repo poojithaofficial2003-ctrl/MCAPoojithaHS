@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BankApp - Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+        body{
+            margin:0;
+            font-family:Arial;
+            background:linear-gradient(135deg,#1e3c72,#2a5298);
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+
+        .card{
+            background:white;
+            padding:40px;
+            border-radius:12px;
+            width:420px;
+            text-align:center;
+            box-shadow:0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        h2{
+            color:#2a5298;
+            margin-bottom:20px;
+        }
+
+        input{
+            width:100%;
+            padding:12px;
+            margin:10px 0;
+            border-radius:6px;
+            border:1px solid #ccc;
+        }
+
+        button{
+            padding:12px;
+            border:none;
+            border-radius:6px;
+            background:#2a5298;
+            color:white;
+            cursor:pointer;
+            font-size:14px;
+        }
+
+        button:hover{
+            background:#1e3c72;
+        }
+
+        .actions{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:10px;
+            margin-top:20px;
+        }
+
+        #result{
+            margin-top:20px;
+            font-weight:bold;
+        }
+
+        .logout{
+            margin-top:20px;
+            background:#d9534f;
+        }
+
+        .logout:hover{
+            background:#b52b27;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2>🏦 Bank Dashboard</h2>
+
+    <input type="text" id="accountNumber" placeholder="Enter Account Number">
+
+    <input type="number" id="amount" placeholder="Enter Amount (for deposit/withdraw)">
+
+    <div class="actions">
+
+        <button onclick="checkBalance()">Check Balance</button>
+
+        <button onclick="deposit()">Deposit</button>
+
+        <button onclick="withdraw()">Withdraw</button>
+
+        <button onclick="clearFields()">Clear</button>
+
+    </div>
+
+    <p id="result"></p>
+
+    <button class="logout" onclick="logout()">Logout</button>
+
+</div>
+
+<script>
+
+    function checkBalance(){
+        let acc = document.getElementById("accountNumber").value;
+
+        if(acc === ""){
+            alert("Enter account number");
+            return;
+        }
+
+        fetch("/account/balance?accountNumber=" + acc)
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById("result").innerText = "Balance : ₹ " + data;
+        })
+        .catch(err => alert("Error fetching balance"));
+    }
+
+    function deposit(){
+        let acc = document.getElementById("accountNumber").value;
+        let amt = document.getElementById("amount").value;
+
+        if(acc === "" || amt === ""){
+            alert("Enter all fields");
+            return;
+        }
+
+        fetch("/account/deposit", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "accountNumber=" + acc + "&amount=" + amt
+        })
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById("result").innerText = data;
+        })
+        .catch(err => alert("Deposit failed"));
+    }
+
+    function withdraw(){
+        let acc = document.getElementById("accountNumber").value;
+        let amt = document.getElementById("amount").value;
+
+        if(acc === "" || amt === ""){
+            alert("Enter all fields");
+            return;
+        }
+
+        fetch("/account/withdraw", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "accountNumber=" + acc + "&amount=" + amt
+        })
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById("result").innerText = data;
+        })
+        .catch(err => alert("Withdraw failed"));
+    }
+
+    function clearFields(){
+        document.getElementById("amount").value = "";
+    }
+
+    function logout(){
+        window.location.href = "/login"; // ✅ FIXED
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BankApp - Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg,#1e3c72,#2a5298);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            color: #2a5298;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background: #2a5298;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1e3c72;
+        }
+
+        #result {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .register-link {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .register-link a {
+            color: #2a5298;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2>🏦 BankApp Login</h2>
+
+    <input type="text" id="username" placeholder="Enter Username">
+
+    <input type="text" id="otp" placeholder="Enter OTP">
+
+    <button onclick="loginUser()">Login</button>
+
+    <p id="result"></p>
+
+    <div class="register-link">
+        New user?
+        <a href="/register">Register here</a>
+    </div>
+
+</div>
+
+<script>
+
+    function loginUser(){
+
+        let username = document.getElementById("username").value;
+        let otp = document.getElementById("otp").value;
+
+        if(username === "" || otp === ""){
+            alert("Please enter all fields");
+            return;
+        }
+
+        fetch("/auth/login?username=" + username + "&otp=" + otp, {
+            method: "POST"
+        })
+        .then(response => response.text())
+        .then(data => {
+
+            document.getElementById("result").innerText = data;
+
+            // ✅ If login success → go to dashboard
+            if(data.includes("Successful")){
+                setTimeout(() => {
+                    window.location.href = "/dashboard";
+                }, 1000);
+            }
+
+        })
+        .catch(error => {
+            alert("Something went wrong!");
+        });
+
+    }
+
+</script>
+
+</body>
+</html>
