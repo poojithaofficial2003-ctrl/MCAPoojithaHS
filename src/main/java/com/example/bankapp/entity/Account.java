@@ -11,7 +11,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true) // ✅ IMPORTANT
+    @Column(unique = true) 
     private String accountNumber;
 
     private double balance;
